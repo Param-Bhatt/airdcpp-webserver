@@ -14,7 +14,7 @@ def check_ana(s):
             if p in f.read():
                 print(p)
                 return p
-   f.close()
+    f.close()
 
 def find_between( s, first, last ):
     try:
@@ -23,6 +23,29 @@ def find_between( s, first, last ):
         return s[start:end]
     except ValueError:
         return ""
+
+def execute():
+    i=72
+    while ( i ):
+        mid = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[3]/div[1]/div[1]/div/div['+str(i)+']/div[2]/div[2]/span').text
+        if ( "Anagram Game was stopped" in mid ):
+            exit()
+        elif ( "New" in mid):
+            text = find_between(mid, "[", "]")
+            text = text.replace(' ', '')
+
+        # now finally got all the words that I need
+
+            ans = check_ana("".join(sorted(text)))
+            print(ans)
+            #send = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/textarea")
+            #send.send_keys(ans)
+            #click = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[2]/div[1]/i")
+            #click.click()
+            i+=1
+        else :
+            i+=1
+            continue
 
 #function to get the substring required. It slices from end to start
 def find_between_rev( s, first, last ):
@@ -53,16 +76,16 @@ hub = browser.find_element_by_xpath('//*[@id="side-menu"]/div[1]/div/a[1]')
 hub.click()
 browser.implicitly_wait(10)
 
-game = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[1]/div/div/div[1]/div/div[1]')
+game = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[1]/div/a/span')
 game.click()
 
 #successfully reached to anagram game
 
 browser.implicitly_wait(10)
 
-''' -----------------Start the for loop from here----------------'''
+''' -----------------Start the for loop from here----------------
 mid = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[3]/div[1]/div[1]/div/div[9]/div[2]/div[2]/span').text
-
+''<!--   Function definition around here -->''
 #function to get the substring required. It slices from start to end
 
 #different functions will give different results in case of repitition of strings,
@@ -78,3 +101,5 @@ send = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/di
 send.send_keys(ans)
 click = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[2]/div[1]/i")
 click.click()
+'''
+execute()
