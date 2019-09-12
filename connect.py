@@ -1,19 +1,23 @@
 from itertools import permutations
 from selenium import webdriver
+import time
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+
+answers = []
 
 def check_ana(s):
     s = s.lower()
     # loop through comparison list
     perms = set([''.join(p) for p in permutations(s)])
+
     for p in perms:
-        p = p + "\n"
+        p ="\n" + p + "\n"
         with open('Words.txt') as f:
             if p in f.read():
-                print(p)
-                return p
+                answers.append(p.upper())
+
     f.close()
 
 def find_between( s, first, last ):
@@ -25,7 +29,7 @@ def find_between( s, first, last ):
         return ""
 
 def execute():
-    i=72
+    i=48
     while ( i ):
         mid = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[3]/div[1]/div[1]/div/div['+str(i)+']/div[2]/div[2]/span').text
         if ( "Anagram Game was stopped" in mid ):
@@ -33,18 +37,20 @@ def execute():
         elif ( "New" in mid):
             text = find_between(mid, "[", "]")
             text = text.replace(' ', '')
+            check_ana("".join(sorted(text)))
 
-        # now finally got all the words that I need
-
-            ans = check_ana("".join(sorted(text)))
-            print(ans)
-            #send = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/textarea")
-            #send.send_keys(ans)
-            #click = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[2]/div[1]/i")
-            #click.click()
+            # now finally got all the words that I need
+            for ans in answers:
+                print(ans)
+                send = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[1]/div/textarea")
+                send.send_keys(ans)
+                click = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[2]/div[1]/i")
+                click.click()
             i+=1
+            j=0
         else :
             i+=1
+            time.sleep(10)
             continue
 
 #function to get the substring required. It slices from end to start
@@ -58,7 +64,7 @@ def find_between_rev( s, first, last ):
 
 browser = webdriver.Chrome()
 browser.get('http://127.0.0.1:5600')
-browser.maximize_window()
+#browser.maximize_window()
 
 #logging into my dc hub
 
@@ -68,20 +74,20 @@ password = browser.find_element_by_xpath('//*[@id="background-wrapper"]/div/div/
 password.send_keys("param")
 btn = browser.find_element_by_xpath('//*[@id="background-wrapper"]/div/div/form/div/button')
 btn.click()
-browser.implicitly_wait(10)
+browser.implicitly_wait(5)
 
 #going to my hub
 
 hub = browser.find_element_by_xpath('//*[@id="side-menu"]/div[1]/div/a[1]')
 hub.click()
-browser.implicitly_wait(10)
+browser.implicitly_wait(5)
 
-game = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[1]/div/a/span')
-game.click()
+#game = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[1]/div/a/span')
+#game.click()
 
 #successfully reached to anagram game
 
-browser.implicitly_wait(10)
+browser.implicitly_wait(15)
 
 ''' -----------------Start the for loop from here----------------
 mid = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[3]/div[1]/div[1]/div/div[9]/div[2]/div[2]/span').text
