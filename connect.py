@@ -13,10 +13,21 @@ def check_ana(s):
     perms = set([''.join(p) for p in permutations(s)])
 
     for p in perms:
-        p ="\n" + p + "\n"
-        with open('Words.txt') as f:
-            if p in f.read():
-                answers.append(p.upper())
+        if(len(p)==5):
+            p ="\n" + p + "\n"
+            with open('5.txt') as f:
+                if p in f.read():
+                    answers.append(p.upper())
+        elif(len(p)==6):
+            p = "\n" + p + "\n"
+            with open('6.txt') as f:
+                if p in f.read():
+                    answers.append(p.upper())
+        else:
+            p = "\n" + p + "\n"
+            with open('7.txt') as f:
+                if p in f.read():
+                    answers.append(p.upper())
 
     f.close()
 
@@ -29,7 +40,7 @@ def find_between( s, first, last ):
         return ""
 
 def execute():
-    i=48
+    i=24
     while ( i ):
         mid = browser.find_element_by_xpath('//*[@id="sidebar-container"]/div/div[2]/div/div[3]/div[1]/div[1]/div/div['+str(i)+']/div[2]/div[2]/span').text
         if ( "Anagram Game was stopped" in mid ):
@@ -47,7 +58,7 @@ def execute():
                 click = browser.find_element_by_xpath("//*[@id='sidebar-container']/div/div[2]/div/div[3]/div[1]/div[2]/div[2]/div[1]/i")
                 click.click()
             i+=1
-            j=0
+            answers.clear()
         else :
             i+=1
             time.sleep(10)
